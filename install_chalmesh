@@ -1,0 +1,80 @@
+#!/bin/sh
+
+if [ -f "bin/chalmesh.uninitialized" ]; then
+
+# Set execute permission for all executables
+	chmod +x bin/chalmesh.*
+
+	CHALMESH_HOME=`pwd`
+	echo "Setting CHALMESH_HOME in bin/chalmesh to " $CHALMESH_HOME
+
+# sed script for setting CHALMESH_HOME in bin/chalmesh
+	sed "s,CHALMESH_HOME=~,CHALMESH_HOME=$CHALMESH_HOME," bin/chalmesh.uninitialized > bin/chalmesh
+
+	chmod 755 bin/chalmesh
+else
+	echo "Error: the file bin/chalmesh.uninitialized does not exist!"
+	echo "You are probably not in the top chalmesh directory!"
+	return 1
+fi
+
+
+# Copy the specific makefile.defs.UNAME to makefile.defs. (if there is one)
+if [ -f "Makefile" ]; then
+    ARCH=`uname`
+    if [ -f "makefile.defs.$ARCH" ]; then
+#
+	CHALMESH_HOME=`pwd`
+	rm -f makefile.defs
+	echo ""
+	echo "Setting CHALMESH in makefile.defs to " $CHALMESH_HOME
+
+# sed script for setting CHALMESH in makefile.defs
+	sed "s,CHALMESH=~,CHALMESH=$CHALMESH_HOME," makefile.defs.$ARCH > makefile.defs
+
+	echo ""
+	echo "Please enter the absolute search path to the HDF library:"
+	read HDF_HOME
+# Check the directory
+	while [ ! -d $HDF_HOME -o ! -d $HDF_HOME/include -o ! -d $HDF_HOME/lib ]
+	do
+	    echo "Can not find all of the directories:"
+	    echo $HDF_HOME, $HDF_HOME/include, $HDF_HOME/lib
+	    echo "Please re-enter the absolute search path to the HDF library:"
+	    read HDF_HOME
+	done
+
+# Set HDF in makefile.defs
+	cp -f makefile.defs makefile.defs.bak
+	sed "s,HDF=~,HDF=$HDF_HOME," makefile.defs.bak > makefile.defs
+
+	echo ""
+	echo "Do you want to use the Mesa library instead of the vendor's OpenGL library? (y/n):"
+	read MESA_YN
+	if [ "$MESA_YN" = "y" -o "$MESA_YN" = "Y" ]; then
+		echo ""
+		echo "Please enter the absolute search path to the Mesa library:"
+		read MESA_HOME
+# Check the directory
+		while [ ! -d $MESA_HOME ]
+		do
+		    echo "Can not find the directory:" $MESA_HOME
+		    echo "Please re-enter the absolute search path to the Mesa library:"
+		    read MESA_HOME
+		done
+
+# Set MESA_HOME in makefile.defs
+		cp -f makefile.defs makefile.defs.bak
+		sed "s,MESA_HOME=,MESA_HOME=$MESA_HOME," makefile.defs.bak > makefile.defs
+
+	fi
+
+	echo ""
+	echo "Compile chalmesh by executing make in this directory."
+    else
+	echo ""
+	echo "Sorry, there is no specific version of makefile.defs for your architecture!"
+	echo "You will get a generic makefile.defs that you must edit to suit your system"
+	cp makefile.defs.gen makefile.defs
+    fi
+fi

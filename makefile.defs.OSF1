@@ -1,0 +1,59 @@
+# DEC alpha machines.
+.SUFFIXES:
+.SUFFIXES: .C .o .c .o 
+
+HDF=~
+CHALMESH=~
+MESA_HOME=
+
+UTIL     = $(CHALMESH)/util
+OGL_PLOT = $(CHALMESH)/ogl_plot
+SURFACE  = $(CHALMESH)/surface
+HOLE     = $(CHALMESH)/hole_surface
+VOLUME   = $(CHALMESH)/volume
+OVERLAP  = $(CHALMESH)/overlap
+STRETCH  = $(CHALMESH)/stretchings
+MAIN     = $(CHALMESH)/src
+DATA     = $(CHALMESH)/data
+INTERFACE= $(CHALMESH)/overture
+
+INCLUDE  = -I../brief_help -I../include -I$(UTIL) -I$(HDF)/include -I$(MESA_HOME)/include
+
+CC= cc
+#
+# optimized settings
+#
+CFLAGS= -O -Olimit 1100 -std1 -warnprotos -DDEC_ALPHA $(INCLUDE)
+#
+# debug settings
+#
+#CFLAGS= -g -std1 -warnprotos -DDEC_ALPHA $(INCLUDE)
+# -DVOLUME_HOLES_1 -DTEST_INSIDE_GLOBAL_DOMAIN
+# -DSTOP_AFTER_VOLUME_HOLES 
+# -DSURFACE_HOLE_CUTTING 
+# 
+
+RANLIB= ranlib
+AR= ar r
+XLIBS= -lXmu -lXext -lX11 
+EXTRALIBS=
+SYSTEM=OSF1
+
+CLIBS= $(OVERLAP)/overlap.a $(VOLUME)/volume.a $(HOLE)/hole_surface.a \
+       $(SURFACE)/surface.a $(STRETCH)/stretchings.a $(OGL_PLOT)/ogl_plot.a \
+       $(UTIL)/util.a 
+
+# Mesa GL-clone
+GLLIBS_MESA= -lMesaGLU -lMesaGL
+# Vendor implemented GL
+GLLIBS= -lGLU -lGL
+
+
+HDFLIBS= -L$(HDF)/lib -lmfhdf -ldf -ljpeg -lz 
+
+.c.o:
+	$(CC) -c $(CFLAGS) $<
+.C.o:
+	$(CCxx) -c $(CCFLAGS) $<
+
+

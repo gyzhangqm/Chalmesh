@@ -1,0 +1,54 @@
+#!/bin/sh
+# Start script for Chalmesh
+CHALMESH_HOME=~
+export CHALMESH_HOME
+
+ARCH=`uname`
+
+# Use the OpenGL version as default if it is available
+if [ -x $CHALMESH_HOME/bin/chalmesh.$ARCH ]; then
+	EXE=$CHALMESH_HOME/bin/chalmesh.$ARCH
+elif [ -x $CHALMESH_HOME/bin/chalmesh_mesa.$ARCH ]; then
+	EXE=$CHALMESH_HOME/bin/chalmesh_mesa.$ARCH
+else
+  echo "Sorry, there is no version of chalmesh compiled for your architecture: " $ARCH
+  return 1
+fi
+
+FLAGS=""
+for F in $*
+do
+  case $F in
+     -help)
+	echo ""
+	echo "Usage:"
+	echo "chalmesh [-opengl | -mesa] [-n] [-c command-file] [-d DISPLAY]"
+	echo ""
+	echo "-opengl          Use OpenGL graphics (if available),"
+	echo "-mesa            Use Mesa graphics (if available),"
+	echo "-n               Turn off the graphical output,"
+	echo "-c command-file  Read commands from command-file,"
+	echo "-d DISPLAY       Open the graphics windos on DISPLAY (hostname:0)."
+	echo ""
+	exit 0
+	;;
+     -mesa)
+	EXE=$CHALMESH_HOME/bin/chalmesh_mesa.$ARCH
+	;;
+     -opengl)
+	EXE=$CHALMESH_HOME/bin/chalmesh.$ARCH
+	;;
+     *)
+	FLAGS="$FLAGS $F"  	# The rest of the flags are sent to the executable.
+        ;; 			
+   esac
+done
+
+if [ -x $EXE ]; then
+# Pass the remaining arguments to the executable
+  $EXE $FLAGS
+else
+  echo "Sorry, the file $EXE does not exist or is not executable"
+  exit 1
+fi
+

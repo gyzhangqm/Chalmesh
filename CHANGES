@@ -1,0 +1,82 @@
+Version    Date          Notes
+------------------------------------
+1.20       Jan 16, 1999  Improved the trimming for very stretched grids, to make sure 
+                         that near neighbors are not removed, so that the mismatch 
+                         correction will work properly. Also changed the treatment
+                         of boundaries in the hyperbolic grid generator to be the same
+                         as in version 1.19. Furthermore, I have worked on the start
+                         script to have the same script for both the OpenGL and Mesa
+                         graphics.
+
+1.19a      Dec  9, 1998  The installation procedure has been re-worked completely and an
+                         installation script has been added that makes all the hardware-
+                         specific changes in the makefiles. Pre-compiled binaries have 
+                         also been added for a number of common hardwares.
+
+1.19       Nov 21, 1998  Improved the surface hole-cutting algorithm by introducing
+                         the normals of the test point associated with the edge
+                         curves. The edge curve can only make a hole in a surface
+                         grid when the normal of the test point is close to that of
+                         the surface grid.
+
+1.18        Oct 4, 1998  Improved the ray-tracing algorithm to make it aware of when
+                         the intersection count is likely to be incorrect, i.e., when
+                         the intersection between the ray and the surface is close to
+                         beeing tangential. In this case, the direction of the ray is
+                         changed until a confident count is achieved.
+
+1.17      Sept 17, 1998  Introduced the grid lengthscale in the stopping criterion for 
+                         Newton's iteration. This makes it possible to make overlapping
+                         grids from very large (or small) component grids. Also fixed 
+                         a bug in the rotation and translation of component grids.
+
+1.16      Sept 15, 1998  Worked some more on the normalized coordinates, which makes
+                         it possible to view objects with very different length scales
+                         in the different coordinate directions.
+
+1.15       Jul 16, 1998  Improved the surface hole-cutting algorithm to better handle
+                         very thin bodies.
+
+1.14       Jul 2, 1998   Fixed two annoying bugs. The first bug overwrote the surface
+                         tolerances for the hole-cutting. The second bug, which only 
+                         caused trouble on Linux systems, made the command interpreter 
+                         crash.
+
+1.13       May 22, 1998  Multiple rotations will now accumulate to make it easier to 
+                         setup complicated transformations. A primitive mechanism for 
+                         using normalized coordinates has also been added. Normalized 
+                         (scaled) coordinates will make it easier to view objects that 
+                         have a significantly different length scale in the different 
+                         coordinate directions.
+
+1.12       Mar 27, 1998  Improved the criterion for divergence in the newton iteration
+                         for the inversion of mappings. The previous criterion caused
+                         the code to crash in extreme cases (on the DEC-alpha). Also 
+                         worked on the color table flickering problem that occured on
+                         DEC-alpha stations without advanced graphics hardware. This 
+                         problem is avoided in this version if the mesa graphics library
+                         is used.
+
+1.11       Mar 24, 1998  Changed the hole-cutting algorithm to work with an overlapping
+                         surface grid instead of a hybrid grid. 
+                         Increased the order of interpolation to cubic for the discrete
+                         point surface mapping.
+                         Introduced rotation, pre- and post-translation for mappings.
+                         Added coordinates of the corners of the bounding box in the
+                         plot window.
+
+1.10       Feb 15, 1998  Added mismatch correction for interpolation points near 
+                         physical boundaries. This is necessary to get boundary layer 
+                         profiles in highly stretched grids correct.
+
+1.09       Jan 27, 1998  Improved the construction of the hybrid surface grid
+                         to better handle thin bodies. (The hybrid surface grid is used
+                         during the hole-cutting to represent the boundary of the
+                         computational domain.)
+
+1.08       Jan 10, 1998  The search path for the tutorial command-files is now hard coded
+                         during compile time to make the tutorials work regardless of the
+                         directory the program is run from. The plotting has also been 
+                         improved to handle very large or very small grids.
+
+

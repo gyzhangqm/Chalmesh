@@ -1,0 +1,66 @@
+Follow these steps to obtain, unpack and compile Chalmesh version 1.19:
+
+If there is a precompiled version of chalmesh available for your architecture,
+you follow these steps:
+
+A1. Get the g-zipped tar file with the executables from
+http://www.na.chalmers.se/~andersp/chalmesh/chalmesh.html.
+
+A2. Uncompress and untar the package (gzcat chalmesh-1.19a-EXE.tar.gz | tar xvf -), 
+where EXE is the name of your architecture. This command will create a new directory, 
+`chalmesh-1.19a', where it will put all the files.
+
+A3. Go to the chalmesh-1.19a directory (cd chalmesh-1.19a) and update the start script by
+executing the install_chalmesh script (./install_chalmesh).
+
+A4. Add the chalmesh-1.19a/bin directory to your PATH.
+
+
+If there is no precompiled version that suits your architecture, you will have 
+to compile the source code:
+
+B1. Since Chalmesh uses HDF from NCSA for saving overlapping grids, you
+must make sure that the HDF-library is installed on your system. You
+should use version 4.0r1, or later. You can obtain the library by
+anonymous ftp from ftp.ncsa.uiuc.edu. Also see the HDF home-page
+http://hdf.ncsa.uiuc.edu/. 
+
+B2. To do 3-D graphics, Chalmesh uses OpenGL. To compile the program you
+must either have a vendor specific implementation of the OpenGL
+libraries, or use the freeware library Mesa. If your machine has
+special graphics hardware, the program will probably run faster if you
+use the vendor's implementation of OpenGL. However, the Mesa library
+has been found to produce more accurate renderings for some cases,
+even tough it usually is slower since all computations are done in
+software. The Mesa library is available from
+http://www.ssec.wisc.edu/~brianp/Mesa.html.
+
+B3. Get the g-zipped tar file with the source code from
+http://www.na.chalmers.se/~andersp/chalmesh/chalmesh.html.
+
+B4. Uncompress and untar the package by `gzcat chalmesh-1.19a.tar.gz | tar xf -'.
+This command will create a new directory, `chalmesh-1.19a', where it will put all 
+the source code.
+
+B5. Go to the chalmesh-1.19a directory (cd chalmesh-1.19a) and update the start script 
+by executing the install_chalmesh script (./install_chalmesh). This will also generate 
+a file `makefile.defs' that contains typical settings for compiling chalmesh on your
+type of architecture.
+
+B6. Type `make' to construct the executable code for chalmesh. If this
+succeeds, the executable code is placed in the bin directory. If the 
+make process results in error, follow the suggestions below.
+
+B7. If the make process fails, there is probably something wrong
+with the makefile.defs file. One common problem is that `ranlib' is
+only used on some systems, so the RANLIB variable might have to be set
+to `echo'. Another common problem is that the include files for X11
+can not be located by the compiler. In that case, you must add the
+directory where they reside as the argument to an -I flag in
+CFLAGS. If the linking step results in unresolved references, the
+problem could be that the linker can not find the library
+libX11.a. You should then add the directory as the argument to a -L
+flag in XLIBS.
+
+B8. Add the chalmesh-1.19a/bin directory to your PATH.
+

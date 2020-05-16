@@ -1,0 +1,48 @@
+# SGI machines running IRIX64
+.SUFFIXES:
+.SUFFIXES: .C .o .c .o 
+
+HDF=~
+CHALMESH=~
+MESA_HOME=
+
+UTIL     = $(CHALMESH)/util
+OGL_PLOT = $(CHALMESH)/ogl_plot
+SURFACE  = $(CHALMESH)/surface
+HOLE     = $(CHALMESH)/hole_surface
+VOLUME   = $(CHALMESH)/volume
+OVERLAP  = $(CHALMESH)/overlap
+STRETCH  = $(CHALMESH)/stretchings
+MAIN     = $(CHALMESH)/src
+DATA     = $(CHALMESH)/data
+INTERFACE= $(CHALMESH)/overture
+
+INCLUDE  = -I../brief_help -I../include -I$(UTIL) -I$(HDF)/include -I$(MESA_HOME)/include
+
+CC= cc
+CFLAGS= -O -xansi -mips4 $(INCLUDE) 
+AR = ar r
+# ranlib is not used on this machine.
+RANLIB= true
+XLIBS= -lXext -lX11 
+EXTRALIBS=
+SYSTEM=IRIX64
+
+CLIBS= $(OVERLAP)/overlap.a $(VOLUME)/volume.a $(HOLE)/hole_surface.a \
+       $(SURFACE)/surface.a $(STRETCH)/stretchings.a $(OGL_PLOT)/ogl_plot.a \
+       $(UTIL)/util.a 
+
+# Mesa GL-clone
+GLLIBS_MESA= -lMesaGLU -lMesaGL
+# Vendor implemented GL
+GLLIBS= -lGLU -lGL
+
+
+HDFLIBS= -L$(HDF)/lib -lmfhdf -ldf -ljpeg -lz 
+
+.c.o:
+	$(CC) -c $(CFLAGS) $<
+.C.o:
+	$(CCxx) -c $(CCFLAGS) $<
+
+
